@@ -1,0 +1,73 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+hide circle
+entity administradores {
+ * usuario : VARCHAR(50) <<PK>>
+ clave : VARCHAR(255)
+ nombre_completo : VARCHAR(60)
+}
+entity cajeros {
+ * usuario : VARCHAR(50) <<PK>>
+ clave : VARCHAR(255)
+ nombre_completo : VARCHAR(60)
+ activo : INT(1)
+}
+entity cuentas {
+ * no_cuenta : VARCHAR(20) <<PK>>
+ nombre : VARCHAR(60)
+ dpi : VARCHAR(13)
+ saldo : DECIMAL(12,2)
+ fecha_creacion : DATETIME
+}
+entity usuarios {
+ * correo : VARCHAR(50) <<PK>>
+ no_cuenta : VARCHAR(20) <<UQ REF>>
+ clave : VARCHAR(255)
+ dpi : VARCHAR(13)
+ fecha_registro : DATETIME
+}
+entity cuentas_terceros {
+ * id : INT <<PK>>
+ correo_usuario : VARCHAR(50) <<REF>>
+ no_cuenta : VARCHAR(20) <<REF>>
+ monto_maximo : DECIMAL(12,2)
+ max_transacciones : INT
+ alias : VARCHAR(40)
+}
+entity movimientos {
+ * id : INT <<PK>>
+ no_cuenta : VARCHAR(20) <<REF>>
+ tipo : VARCHAR(20)
+ monto : DECIMAL(12,2)
+ tipo_mov : VARCHAR(10)
+ descripcion : VARCHAR(100)
+ fecha : DATETIME
+}
+entity transferencias {
+ * id : INT <<PK>>
+ cuenta_origen : VARCHAR(20) <<REF>>
+ cuenta_destino : VARCHAR(20) <<REF>>
+ monto : DECIMAL(12,2)
+ fecha : DATETIME
+}
+entity server_logs {
+ * id : INT <<PK>>
+ ip_origen : VARCHAR(45)
+ pagina_solicitada : VARCHAR(255)
+ metodo : VARCHAR(10)
+ codigo_respuesta : INT
+ fecha_hora : DATETIME
+}
+cuentas ||..o| usuarios : cuenta
+usuarios ||..o{ cuentas_terceros : propietario
+cuentas ||..o{ cuentas_terceros : destino
+cuentas ||..o{ movimientos : historial
+cuentas ||..o{ transferencias : origen
+cuentas ||..o{ transferencias : destino
+note bottom of cuentas
+Relaciones lógicas (sin FOREIGN KEY)
+server_logs es independiente
+end note
+@enduml

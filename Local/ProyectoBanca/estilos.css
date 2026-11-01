@@ -659,6 +659,18 @@ table tr:last-child td {
     .landing-hero p {
         font-size: 18px;
     }
+
+    /* Las tablas anchas se desplazan dentro de su tarjeta en lugar de salirse de la pantalla. */
+    .card {
+        padding: 22px 18px;
+        overflow-x: auto;
+    }
+
+    table th,
+    table td {
+        padding: 10px 8px;
+        font-size: 14px;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {

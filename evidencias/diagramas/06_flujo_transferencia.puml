@@ -1,0 +1,20 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+start
+:Formulario de transferencia;
+:PHP valida sesión y token CSRF;
+:PHP valida monto y tercero del cliente;
+:BD inicia transacción y bloquea registros;
+if (Saldo límites y destino válidos) then (Sí)
+ :Actualizar dos saldos;
+ :Insertar dos movimientos y una transferencia;
+ :COMMIT;
+ :Confirmar resultado al cliente;
+else (No)
+ :ROLLBACK;
+ :Rechazar sin cambios;
+endif
+stop
+@enduml

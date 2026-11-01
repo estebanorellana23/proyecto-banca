@@ -1,0 +1,19 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+left to right direction
+actor "Cajero" as A
+rectangle "Banco UMG" {
+ usecase "Iniciar sesión" as UC1
+ usecase "Crear cuenta monetaria" as UC2
+ usecase "Registrar depósito" as UC3
+ usecase "Registrar retiro" as UC4
+ usecase "Cerrar sesión" as UC5
+}
+A -- UC1
+A -- UC2
+A -- UC3
+A -- UC4
+A -- UC5
+@enduml

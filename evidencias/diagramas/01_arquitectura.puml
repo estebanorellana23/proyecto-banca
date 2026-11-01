@@ -1,0 +1,28 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam componentStyle rectangle
+left to right direction
+actor "Cliente, cajero\no administrador\n(computadora)" as PC
+actor "Usuario en\nsmartphone" as M
+node "InfinityFree (Apache + PHP)\nbancadw.infinityfree.me" as H {
+  component "Vistas HTML5 y CSS3\n(estilos.css, diseño responsivo)" as V
+  component "Sesiones, roles y validaciones\n(seguridad.php, verificar_*.php)" as S
+  component "Módulos por rol\nadmin_* / cajero_* / usuario_*" as A
+  component "Capa de procedimientos\n(procedimientos.php)" as P
+  component "Registro de tráfico\n(conexion.php) y panel logs.php" as L
+}
+database "MySQL\n7 tablas del banco\n+ server_logs" as DB
+node "Entorno local (XAMPP)" as X {
+  database "MySQL local\n7 tablas + 24\nprocedimientos almacenados" as DBL
+}
+PC --> V : HTTPS
+M --> V : HTTPS
+V --> S
+S --> A
+A --> P : CALL sp_*
+P --> DB : consultas preparadas\ny transacciones
+L --> DB : INSERT / SELECT
+A ..> DBL : CALL sp_* (desarrollo)
+@enduml
